@@ -13,15 +13,17 @@ namespace RestMock
     public sealed class MockServer : IDisposable
     {
         private readonly IWebHost _host;
+        private readonly Endpoint _endpoint;
         private readonly CancellationTokenSource _cancellationTokenSource
             = new CancellationTokenSource();
         private readonly ManualResetEventSlim _terminated
             = new ManualResetEventSlim();
 
-        internal MockServer(IWebHost host, Uri listenUrl)
+        internal MockServer(IWebHost host, Endpoint endpoint)
         {
             _host = host;
-            ListenUrl = listenUrl;
+            _endpoint = endpoint;
+
             Task.Run(() =>
             {
                 try
@@ -40,7 +42,7 @@ namespace RestMock
         ///     Server's URL
         /// </summary>
         [NotNull]
-        public Uri ListenUrl { get; }
+        public Uri ListenUrl => _endpoint.Uri;
 
         /// <inheritdoc />
         public void Dispose()
@@ -49,6 +51,8 @@ namespace RestMock
             _terminated.Wait();
             _cancellationTokenSource.Dispose();
             _host.Dispose();
+
+            Endpoint.ReleaseEndpoint(_endpoint);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,12 +45,11 @@ namespace RestMock
         [NotNull]
         public MockServer Create()
         {
-            // TODO use smart detection
-            const string url = "http://127.0.0.1:8000";
+            var endpoint = Endpoint.GetEndpoint();
 
             var builder = new WebHostBuilder()
                 .UseKestrel()
-                .UseUrls(url)
+                .UseUrls(endpoint.Url)
                 .ConfigureServices(services =>
                 {
                     services.AddRouting();
@@ -70,7 +68,7 @@ namespace RestMock
                 });
             var host = builder.Build();
 
-            return new MockServer(host, new Uri(url, UriKind.Absolute));
+            return new MockServer(host, endpoint);
         }
     }
 }
