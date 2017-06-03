@@ -1,7 +1,7 @@
 RestMock
 ========
 
-A small library to mock HTTP services.
+A small library to mock HTTP services. Its primary goal is to simplify writing integration tests for RESTful microservices.
 
 Usage
 -----
@@ -27,6 +27,18 @@ mock.Verb("GET").Url("/items/{id}").Returns(context =>
 mock.Post("/items").Returns(200);
 mock.Put("/items/{id}").ReturnsJson(new { msg = "It's a fake object" });
 ```
+
+You may also import a [swagger](http://swagger.io/specification/) JSON file:
+
+```csharp
+var swagger = @"
+   /* Put swagger content here */
+";
+mock.ImportSwaggerJson(swagger);
+```
+
+This code will take all pathes and operations and define corresponding mocks. Mocks will respond with JSONs generated from swagger schemes.
+
 
 Finally, you may create a instance of HTTP server with configured mocks:
 

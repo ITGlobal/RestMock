@@ -1,0 +1,126 @@
+﻿{
+  "swagger": "2.0",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/foo": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Foo"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Foo"
+            }
+          }
+        }
+      }
+    },
+    "/foo/{id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Foo"
+            }
+          }
+        }
+      },
+      "put": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Foo"
+            }
+          }
+        }
+      },
+      "patch": {
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Foo"
+            }
+          }
+        }
+      },
+      "delete": {
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/bar": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Foo": {
+      "type": "object",
+      "properties": {
+        "a": {
+          "type": "string"
+        },
+        "b": {
+          "type": "boolean"
+        },
+        "c": {
+          "type": "integer"
+        },
+        "d": {
+          "$ref": "#/definitions/Bar"
+        },
+        "e": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Bar"
+          }
+        }
+      }
+    },
+    "Bar": {
+      "type": "object",
+      "properties": {
+        "a": {
+          "type": "string"
+        },
+        "b": {
+          "type": "boolean"
+        },
+        "c": {
+          "type": "integer"
+        },
+        "d": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

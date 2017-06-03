@@ -63,6 +63,11 @@ namespace RestMock
         /// </summary>
         public void Write([NotNull] byte[] content, string contentType = null)
         {
+            if (content.Length == 0)
+            {
+                return;
+            }
+
             contentType = contentType ?? "application/octet-stream";
 
             Header("Content-Type", contentType);

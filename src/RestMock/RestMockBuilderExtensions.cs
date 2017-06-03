@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using RestMock.Swagger;
 
 namespace RestMock
 {
@@ -112,6 +113,20 @@ namespace RestMock
         public static ActionBuilder Options([NotNull] this RestMockBuilder builder, [NotNull] string url)
             => builder.Options().Url(url);
 
+        #endregion
+
+        #region Swagger support
+
+        /// <summary>
+        ///     Configures mocked server from JSON swagger document
+        /// </summary>
+        [NotNull]
+        public static RestMockBuilder ImportSwaggerJson([NotNull] this RestMockBuilder builder, [NotNull] string swaggerJson)
+        {
+            SwaggerConfigurator.ConfigureFromSwagger(builder, swaggerJson);
+            return builder;
+        }
+        
         #endregion
     }
 }
