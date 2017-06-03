@@ -1,6 +1,11 @@
 RestMock
 ========
 
+
+[![Build status](https://ci.appveyor.com/api/projects/status/qjj0nmxofejhcvyy/branch/master?svg=true)](https://ci.appveyor.com/project/itgloballlc/restmock/branch/master)
+[![Nuget](https://img.shields.io/nuget/v/ITGlobal.RestMock.svg)](https://www.nuget.org/packages/ITGlobal.RestMock)
+[![License](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)
+
 A small library to mock HTTP services. Its primary goal is to simplify writing integration tests for RESTful microservices.
 
 Usage
