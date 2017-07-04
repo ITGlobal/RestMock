@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.HttpOverrides.Internal;
 
 namespace RestMock
 {
@@ -12,17 +13,32 @@ namespace RestMock
         private const int MinPort = 12000;
 
         private readonly int _port;
+        private readonly bool _isCustom;
 
-        private Endpoint(int port)
+        private Endpoint(int port) 
+            : this("127.0.0.1", port, false)
+        { }
+
+        private Endpoint(string address, int port, bool isCustom)
         {
             _port = port;
-            Url = $"http://127.0.0.1:{port}";
+            _isCustom = isCustom;
+            Url = $"http://{address}:{port}";
             Uri = new Uri(Url, UriKind.Absolute);
         }
 
-        
         public string Url { get; }
         public Uri Uri { get; }
+
+        public static Endpoint CreateEndpoint(string endpoint)
+        {
+            if (!IPEndPointParser.TryParse(endpoint, out var ep))
+            {
+                throw new ArgumentException("Malformed endpoint", nameof(endpoint));
+            }
+            
+            return new Endpoint(ep.Address.ToString(), ep.Port, true);
+        }
 
         public static Endpoint GetEndpoint()
         {
@@ -41,7 +57,7 @@ namespace RestMock
 
                     while (true)
                     {
-                        if (Enumerable.All(TakenEndpoints, _ => _._port != port))
+                        if (TakenEndpoints.All(_ => _._port != port))
                         {
                             break;
                         }
@@ -59,6 +75,11 @@ namespace RestMock
 
         public static void ReleaseEndpoint(Endpoint endpoint)
         {
+            if (endpoint._isCustom)
+            {
+                return;
+            }
+
             lock (SyncRoot)
             {
                 TakenEndpoints.Remove(endpoint);

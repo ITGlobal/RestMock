@@ -43,10 +43,20 @@ namespace RestMock
         ///     Creates an instance of a mocked HTTP server
         /// </summary>
         [NotNull]
-        public MockServer Create()
-        {
-            var endpoint = Endpoint.GetEndpoint();
+        public MockServer Create() => Create(Endpoint.GetEndpoint());
 
+        /// <summary>
+        ///     Creates an instance of a mocked HTTP server
+        /// </summary>
+        [NotNull]
+        public MockServer Create(string endpoint) => Create(Endpoint.CreateEndpoint(endpoint));
+
+        /// <summary>
+        ///     Creates an instance of a mocked HTTP server
+        /// </summary>
+        [NotNull]
+        private MockServer Create(Endpoint endpoint)
+        {
             var builder = new WebHostBuilder()
                 .UseKestrel()
                 .UseUrls(endpoint.Url)
