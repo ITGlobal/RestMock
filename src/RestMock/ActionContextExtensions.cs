@@ -1,5 +1,6 @@
-﻿using System.Text;
+using System.Text;
 using JetBrains.Annotations;
+using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 
@@ -46,7 +47,12 @@ namespace RestMock
             encoding = encoding ?? Encoding.UTF8;
             contentType = contentType ?? "application/octet-stream";
 
+#if NETSTANDARD1_6
             var mdHeader = MediaTypeHeaderValue.Parse(contentType);
+#else
+            var mdHeader = MediaTypeHeaderValue.Parse(new StringSegment(contentType));
+#endif
+
             mdHeader.Charset = encoding.WebName;
             contentType = mdHeader.ToString();
 
