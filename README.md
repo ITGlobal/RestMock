@@ -1,7 +1,6 @@
 RestMock
 ========
 
-
 [![Build status](https://ci.appveyor.com/api/projects/status/qjj0nmxofejhcvyy/branch/master?svg=true)](https://ci.appveyor.com/project/itgloballlc/restmock/branch/master)
 [![Nuget](https://img.shields.io/nuget/v/ITGlobal.RestMock.svg)](https://www.nuget.org/packages/ITGlobal.RestMock)
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)
@@ -44,6 +43,16 @@ mock.ImportSwaggerJson(swagger);
 
 This code will take all pathes and operations and define corresponding mocks. Mocks will respond with JSONs generated from swagger schemes.
 
+Optionally, you may attach some custom middlewares, e.g. error handler:
+
+```csharp
+mock.UseMiddleware(new MyHttpMiddleware());
+mock.UseErrorHandler((method, url, exception) =>
+{
+    Console.WriteLine($"RestMock failed to handle {method} {url}!");
+    Console.WriteLine(exception);
+});
+```
 
 Finally, you may create a instance of HTTP server with configured mocks:
 

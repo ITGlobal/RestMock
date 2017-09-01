@@ -1,4 +1,8 @@
-﻿using JetBrains.Annotations;
+using System;
+using System.Threading.Tasks;
+using JetBrains.Annotations;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using RestMock.Swagger;
 
 namespace RestMock
@@ -126,7 +130,45 @@ namespace RestMock
             SwaggerConfigurator.ConfigureFromSwagger(builder, swaggerJson);
             return builder;
         }
-        
+
+        #endregion
+
+        #region ErrorHandler support
+
+        /// <summary>
+        ///     Adds a error handler callback to HTTP pipeline
+        /// </summary>
+        [NotNull]
+        public static RestMockBuilder UseErrorHandler([NotNull] this RestMockBuilder builder, [NotNull] ErrorHandler handler)
+        {
+            return builder.UseMiddleware(new ErrorHandlerMiddleware(handler));
+        }
+
+        private sealed class ErrorHandlerMiddleware : IMiddleware
+        {
+            private readonly ErrorHandler _handler;
+
+            public ErrorHandlerMiddleware(ErrorHandler handler)
+            {
+                _handler = handler;
+            }
+
+            public async Task InvokeAsync(HttpContext context, Func<Task> next)
+            {
+                try
+                {
+                    await next();
+                }
+                catch (Exception e)
+                {
+                    var url = $"{context.Request.Path}{context.Request.QueryString}";
+                    _handler(context.Request.Method, url, e);
+                    context.Response.StatusCode = 500;
+                    await context.Response.WriteAsync(e.Message);
+                }
+            }
+        }
+
         #endregion
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +13,7 @@ namespace RestMock
     public sealed class RestMockBuilder
     {
         private readonly Dictionary<string, VerbBuilder> _verbs = new Dictionary<string, VerbBuilder>();
+        private readonly List<IMiddleware> _middlewares = new List<IMiddleware>();
 
         private RestMockBuilder() { }
 
@@ -37,6 +38,16 @@ namespace RestMock
             }
 
             return builder;
+        }
+
+        /// <summary>
+        ///     Adds a middleware into HTTP pipeline
+        /// </summary>
+        [NotNull]
+        public RestMockBuilder UseMiddleware([NotNull] IMiddleware middleware)
+        {
+            _middlewares.Add(middleware);
+            return this;
         }
 
         /// <summary>
@@ -67,6 +78,15 @@ namespace RestMock
                 .CaptureStartupErrors(true)
                 .Configure(app =>
                 {
+                    foreach (var m in _middlewares)
+                    {
+                        var middleware = m;
+                        app.Use(next =>
+                        {
+                            return context => middleware.InvokeAsync(context, () => next(context));
+                        });
+                    }
+
                     app.UseRouter(routes =>
                     {
                         foreach (var verb in _verbs.Values)
