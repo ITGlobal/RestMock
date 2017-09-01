@@ -1,7 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <Description>ASP.NET Core extensible and embeddable documentation engine</Description>
+    <Description>A small library to mock HTTP services.</Description>
     <Copyright>IT Global LLC</Copyright>
     <Authors>IT Global LLC</Authors>
     <PackageTags>http;rest;mock;aspnet;aspnetcore</PackageTags>
