@@ -1,20 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>netstandard1.6</TargetFramework>
-    </PropertyGroup>
-    <Import Project="../common.props" />
-    <PropertyGroup>
-        <PackageId>ITGlobal.RestMock</PackageId>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <DocumentationFile>bin\Debug\netcoreapp1.1\RestMock.xml</DocumentationFile>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <DocumentationFile>bin\Release\netcoreapp1.1\RestMock.xml</DocumentationFile>
-    </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="10.4.0" />
-        <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
-        <PackageReference Include="System.ValueTuple" Version="4.3.1" />
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.6;netstandard2.0</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageId>ITGlobal.RestMock</PackageId>
+    <Description>A small library to mock HTTP services.</Description>
+    <Copyright>IT Global LLC</Copyright>
+    <Authors>IT Global LLC</Authors>
+    <PackageTags>http;rest;mock;aspnet;aspnetcore</PackageTags>
+    <PackageProjectUrl>https://github.com/ITGlobal/RestMock</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/ITGlobal/RestMock/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/ITGlobal/RestMock.git</RepositoryUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <VersionPrefix Condition="'$(Version)' == ''">0.0.0-dev</VersionPrefix>
+    <VersionPrefix Condition="'$(Version)' != ''">$(Version)</VersionPrefix>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="11.0.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
+    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
+  </ItemGroup>
 </Project>
