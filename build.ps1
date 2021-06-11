@@ -94,26 +94,18 @@ if($LASTEXITCODE -ne 0) {
 }
 
 # PACKAGE
-& dotnet pack /nologo -v q -c $CONFIGURATION /p:Version=$VERSION --include-symbols --include-source --output $ARTIFACTS ./src/RestMock/RestMock.csproj
+& dotnet pack --nologo -v q -c $CONFIGURATION /p:Version=$VERSION --include-symbols --include-source --output $ARTIFACTS ./src/RestMock/RestMock.csproj
 if ($LASTEXITCODE -ne 0) {
     Write-Host "`"dotnet pack`" failed with $LASTEXITCODE"
     exit $LASTEXITCODE
 }
 
-
 # TEST
-$testXml = Join-Path $ARTIFACTS "tests.xml"
-if(Test-Path $testXml) {
-    Remove-Item $testXml
-}
-
-pushd ./tests
-& dotnet xunit -nologo -configuration $CONFIGURATION -nobuild -xml $testXml
+& dotnet test --nologo -v q --configuration $CONFIGURATION
 if ($LASTEXITCODE -ne 0) {
     Write-Host "`"dotnet xunit`" failed with $LASTEXITCODE"
     popd
     exit $LASTEXITCODE
 }
-popd
 
 Write-Host "Completed" -f Green

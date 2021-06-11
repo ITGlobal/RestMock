@@ -3,6 +3,7 @@
         <TargetFrameworks>net5.0</TargetFrameworks>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <OutputType>Library</OutputType>
+        <IsPackable>true</IsPackable>
     </PropertyGroup>
     <PropertyGroup>
         <PackageId>ITGlobal.RestMock</PackageId>
@@ -11,7 +12,7 @@
         <Authors>IT Global LLC</Authors>
         <PackageTags>http;rest;mock;aspnet;aspnetcore</PackageTags>
         <PackageProjectUrl>https://github.com/ITGlobal/RestMock</PackageProjectUrl>
-        <PackageLicenseUrl>https://raw.githubusercontent.com/ITGlobal/RestMock/master/LICENSE</PackageLicenseUrl>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/ITGlobal/RestMock.git</RepositoryUrl>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -21,6 +22,9 @@
         <VersionPrefix Condition="'$(Version)' == ''">0.0.0-dev</VersionPrefix>
         <VersionPrefix Condition="'$(Version)' != ''">$(Version)</VersionPrefix>
     </PropertyGroup>
+      <ItemGroup>
+        <None Include="../../LICENSE" Pack="true" PackagePath=""/>
+    </ItemGroup>
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
