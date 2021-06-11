@@ -12,10 +12,13 @@ namespace RestMock
     [PublicAPI]
     public sealed class RestMockBuilder
     {
+
         private readonly Dictionary<string, VerbBuilder> _verbs = new Dictionary<string, VerbBuilder>();
         private readonly List<IMiddleware> _middlewares = new List<IMiddleware>();
 
-        private RestMockBuilder() { }
+        private RestMockBuilder()
+        {
+        }
 
         /// <summary>
         ///     Gets a mock configuration builder for specified verb
@@ -69,36 +72,38 @@ namespace RestMock
         private MockServer Create(Endpoint endpoint)
         {
             var builder = new WebHostBuilder()
-                .UseKestrel()
+                .UseKestrel(
+                    options => { options.AllowSynchronousIO = true; }
+                )
                 .UseUrls(endpoint.Url)
-                .ConfigureServices(services =>
-                {
-                    services.AddRouting();
-                })
+                .ConfigureServices(services => { services.AddRouting(); })
                 .CaptureStartupErrors(true)
-                .Configure(app =>
-                {
-                    foreach (var m in _middlewares)
+                .Configure(
+                    app =>
                     {
-                        var middleware = m;
-                        app.Use(next =>
+                        foreach (var m in _middlewares)
                         {
-                            return context => middleware.InvokeAsync(context, () => next(context));
-                        });
-                    }
-
-                    app.UseRouter(routes =>
-                    {
-                        foreach (var verb in _verbs.Values)
-                        {
-                            verb.BuildRoutes(routes);
+                            var middleware = m;
+                            app.Use(
+                                next => { return context => middleware.InvokeAsync(context, () => next(context)); }
+                            );
                         }
-                    });
 
-                });
+                        app.UseRouter(
+                            routes =>
+                            {
+                                foreach (var verb in _verbs.Values)
+                                {
+                                    verb.BuildRoutes(routes);
+                                }
+                            }
+                        );
+                    }
+                );
             var host = builder.Build();
 
             return new MockServer(host, endpoint);
         }
+
     }
 }

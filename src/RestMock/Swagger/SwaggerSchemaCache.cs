@@ -1,4 +1,3 @@
-﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
@@ -6,7 +5,7 @@ namespace RestMock.Swagger
 {
     internal sealed class SwaggerSchemaCache
     {
-        private readonly Dictionary<string, JToken> _jsons = new Dictionary<string, JToken>();
+        private readonly Dictionary<string, JToken> _jsons = new();
         private readonly SwaggerDocument _document;
 
         public SwaggerSchemaCache(SwaggerDocument document)

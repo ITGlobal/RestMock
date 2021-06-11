@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Routing;
 
@@ -10,7 +10,8 @@ namespace RestMock
     [PublicAPI]
     public sealed class VerbBuilder
     {
-        private readonly Dictionary<string, ActionBuilder> _actions = new Dictionary<string, ActionBuilder>();
+
+        private readonly Dictionary<string, ActionBuilder> _actions = new();
 
         private readonly RestMockBuilder _builder;
         private readonly string _verb;
@@ -48,5 +49,6 @@ namespace RestMock
                 action.BuildRoutes(routes);
             }
         }
+
     }
 }

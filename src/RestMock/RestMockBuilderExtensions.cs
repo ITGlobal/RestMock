@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
 using RestMock.Swagger;
 
 namespace RestMock

@@ -1,33 +1,29 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFrameworks>netstandard1.6;netstandard2.0</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PackageId>ITGlobal.RestMock</PackageId>
-    <Description>A small library to mock HTTP services.</Description>
-    <Copyright>IT Global LLC</Copyright>
-    <Authors>IT Global LLC</Authors>
-    <PackageTags>http;rest;mock;aspnet;aspnetcore</PackageTags>
-    <PackageProjectUrl>https://github.com/ITGlobal/RestMock</PackageProjectUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/ITGlobal/RestMock/master/LICENSE</PackageLicenseUrl>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/ITGlobal/RestMock.git</RepositoryUrl>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <VersionPrefix Condition="'$(Version)' == ''">0.0.0-dev</VersionPrefix>
-    <VersionPrefix Condition="'$(Version)' != ''">$(Version)</VersionPrefix>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="11.0.0" />
-    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
-    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
-  </ItemGroup>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+        <TargetFrameworks>net5.0</TargetFrameworks>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+    <PropertyGroup>
+        <PackageId>ITGlobal.RestMock</PackageId>
+        <Description>A small library to mock HTTP services.</Description>
+        <Copyright>IT Global LLC</Copyright>
+        <Authors>IT Global LLC</Authors>
+        <PackageTags>http;rest;mock;aspnet;aspnetcore</PackageTags>
+        <PackageProjectUrl>https://github.com/ITGlobal/RestMock</PackageProjectUrl>
+        <PackageLicenseUrl>https://raw.githubusercontent.com/ITGlobal/RestMock/master/LICENSE</PackageLicenseUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/ITGlobal/RestMock.git</RepositoryUrl>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+        <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+        <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+        <VersionPrefix Condition="'$(Version)' == ''">0.0.0-dev</VersionPrefix>
+        <VersionPrefix Condition="'$(Version)' != ''">$(Version)</VersionPrefix>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    </ItemGroup>
 </Project>

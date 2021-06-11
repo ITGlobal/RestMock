@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace RestMock.Swagger
@@ -11,14 +11,10 @@ namespace RestMock.Swagger
 
             var schemas = new SwaggerSchemaCache(swagger);
 
-            foreach (var p1 in swagger.Paths)
+            foreach (var (path, value) in swagger!.Paths)
             {
-                var path = p1.Key;
-                foreach (var p2 in p1.Value)
+                foreach (var (verb, operation) in value)
                 {
-                    var verb = p2.Key;
-                    var operation = p2.Value;
-
                     var (status, response) = operation.Responses
                         .Select(_ => (status: int.Parse(_.Key), response: _.Value))
                         .Where(_ => _.status >= 200 && _.status < 300)
@@ -26,8 +22,7 @@ namespace RestMock.Swagger
                         .FirstOrDefault();
                     if (response != null)
                     {
-                        var actionBuilder = builder.Verb(verb)
-                            .Url(path);
+                        var actionBuilder = builder.Verb(verb).Url(path);
 
                         if (response.Schema == null)
                         {

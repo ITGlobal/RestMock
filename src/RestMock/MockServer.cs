@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
@@ -12,30 +12,31 @@ namespace RestMock
     [PublicAPI]
     public sealed class MockServer : IDisposable
     {
+
         private readonly IWebHost _host;
         private readonly Endpoint _endpoint;
-        private readonly CancellationTokenSource _cancellationTokenSource
-            = new CancellationTokenSource();
-        private readonly ManualResetEventSlim _terminated
-            = new ManualResetEventSlim();
+        private readonly CancellationTokenSource _cancellationTokenSource = new();
+        private readonly ManualResetEventSlim _terminated = new();
 
         internal MockServer(IWebHost host, Endpoint endpoint)
         {
             _host = host;
             _endpoint = endpoint;
 
-            Task.Run(() =>
-            {
-                try
+            Task.Run(
+                () =>
                 {
-                    _host.Start();
-                    _cancellationTokenSource.Token.WaitHandle.WaitOne();
+                    try
+                    {
+                        _host.Start();
+                        _cancellationTokenSource.Token.WaitHandle.WaitOne();
+                    }
+                    finally
+                    {
+                        _terminated.Set();
+                    }
                 }
-                finally
-                {
-                    _terminated.Set();
-                }
-            });
+            );
         }
 
         /// <summary>
@@ -54,5 +55,6 @@ namespace RestMock
 
             Endpoint.ReleaseEndpoint(_endpoint);
         }
+
     }
 }

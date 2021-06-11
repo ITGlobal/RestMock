@@ -1,23 +1,25 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.HttpOverrides.Internal;
+using System.Net;
 
 namespace RestMock
 {
     internal sealed class Endpoint
     {
-        private static readonly object SyncRoot = new object();
-        private static readonly List<Endpoint> FreeEndpoints = new List<Endpoint>();
-        private static readonly List<Endpoint> TakenEndpoints = new List<Endpoint>();
+
+        private static readonly object SyncRoot = new();
+        private static readonly List<Endpoint> FreeEndpoints = new();
+        private static readonly List<Endpoint> TakenEndpoints = new();
         private const int MinPort = 12000;
 
         private readonly int _port;
         private readonly bool _isCustom;
 
-        private Endpoint(int port) 
+        private Endpoint(int port)
             : this("127.0.0.1", port, false)
-        { }
+        {
+        }
 
         private Endpoint(string address, int port, bool isCustom)
         {
@@ -32,11 +34,11 @@ namespace RestMock
 
         public static Endpoint CreateEndpoint(string endpoint)
         {
-            if (!IPEndPointParser.TryParse(endpoint, out var ep))
+            if (!IPEndPoint.TryParse(endpoint, out var ep))
             {
                 throw new ArgumentException("Malformed endpoint", nameof(endpoint));
             }
-            
+
             return new Endpoint(ep.Address.ToString(), ep.Port, true);
         }
 
@@ -48,7 +50,7 @@ namespace RestMock
 
                 if (FreeEndpoints.Count > 0)
                 {
-                    endpoint = FreeEndpoints[FreeEndpoints.Count - 1];
+                    endpoint = FreeEndpoints[^1];
                     FreeEndpoints.Remove(endpoint);
                 }
                 else
@@ -86,5 +88,6 @@ namespace RestMock
                 FreeEndpoints.Add(endpoint);
             }
         }
+
     }
 }

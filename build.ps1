@@ -25,16 +25,26 @@ if ([string]::IsNullOrWhiteSpace($version)) {
     $version = "v0.0"
 }
 
-$match = [regex]::Match($version, "^v(|\.)([0-9]+)\.([0-9]+)(|\.[0-9]+)$")
+$match = [regex]::Match($version, "^v\.?([0-9]+)\.?([0-9]*)\.?([0-9]*)$")
 if ($match.Success) {
-    $VER_MAJOR = [int]::Parse($match.Groups[2].Value)
-    $VER_MINOR = [int]::Parse($match.Groups[3].Value)
+    function try_parse_int($str) {
+        if ([string]::IsNullOrEmpty($str)) {
+            return 0
+        }
+
+        return [int]::Parse($str)
+    }
+
+    $VER_MAJOR = try_parse_int($match.Groups[1].Value)
+    $VER_MINOR = try_parse_int($match.Groups[2].Value)
+    $VER_PATCH = try_parse_int($match.Groups[3].Value)
 }
 else {
     Write-Host "Git version tag is malformed: `"$version`". Expected a `"v[0-9].[0-9]`" value" -f Red
     Wrire-Host "Will use fallback value v0.0"
     $VER_MAJOR = 0
     $VER_MINOR = 0
+    $VER_PATCH = 0
 }
 
 $VER_SUFFIX = ""
@@ -61,7 +71,7 @@ else {
     $VER_BUILD = 0
 }
 
-$VERSION = "$VER_MAJOR.$VER_MINOR.$VER_BUILD$VER_SUFFIX"
+$VERSION = "$VER_MAJOR.$VER_MINOR.$VER_PATCH$VER_SUFFIX"
 Write-Host "Version number: " -n
 Write-Host "$VERSION" -f yellow
 
